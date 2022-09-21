@@ -88,13 +88,32 @@ class QueensQuest extends StatelessWidget {
         itemCount: queens.length,
         itemBuilder: (context, idx) {
           logger.i(queens.length);
-          return Text(
-            queens[idx].name,
-            style: const TextStyle(fontSize: 18),
+          return ListTile(
+            title: Text(queens[idx].name, style: const TextStyle(fontSize: 18)),
+            onTap: () => _onTapQueen(context, queens[idx].id),
           );
         });
   }
+
+  void _onTapQueen(BuildContext context,int queenId) {
+    final _data = QueensAPI.fetchQueenById(queenId).then((value) =>
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => QueenDetailRoute(queen: value))));
+  }
 }
+
+
+class QueenDetailRoute extends StatelessWidget {
+  const QueenDetailRoute({Key? key, this.queen}) : super(key: key);
+
+  final Queen? queen;
+  @override
+  Widget build(BuildContext context) {
+    return Text(queen?.name != null ? queen!.name : 'null');
+  }
+}
+
 
 class RandomWords extends StatefulWidget {
   const RandomWords({super.key});
