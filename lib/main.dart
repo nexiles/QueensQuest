@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:queens_quest/queen.dart';
 
 late final Logger logger;
+import 'package:english_words/english_words.dart';
 
 void main() {
   logger = Logger();
@@ -33,7 +34,15 @@ class QueensQuest extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.pink,
       ),
-      home: const MyHomePage(title: 'QueensQuest'),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Foo'),
+        ),
+        body: const Center(
+          child: RandomWords(),
+        ),
+      ),
+      // home: const MyHomePage(title: 'Queens Quest'),
     );
   }
 }
@@ -106,5 +115,41 @@ class _MyHomePageState extends State<MyHomePage> {
     queensList.forEach((queen) => logger.i(jsonEncode(queen)));
     return queensList;
   }
+
+}
+
+class RandomWords extends StatefulWidget {
+  const RandomWords({super.key});
+
+  @override
+  State<RandomWords> createState() => _RandomWordsState();
+}
+
+
+class _RandomWordsState extends State<RandomWords> {
+  final _suggestions = <WordPair>[];
+  final _biggerFont = const TextStyle(fontSize: 18);
+  @override
+  Widget build(BuildContext context) {
+    final wordPair = WordPair.random();
+    return ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemBuilder: (context, i) {
+          if (i.isOdd) return const Divider(); /*2*/
+          final index = i ~/ 2; /*3*/
+          if (index >= _suggestions.length) {
+            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
+          }
+          return ListTile(
+            title: Text(
+              _suggestions[index].asPascalCase,
+              style: _biggerFont
+            ),
+          );
+        }
+    );
+
+  }
+
 
 }
