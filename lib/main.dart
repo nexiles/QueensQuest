@@ -36,7 +36,21 @@ class QueensQuest extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Foo'),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/queensCrown.png',
+                fit: BoxFit.contain,
+                 height: 32,
+              ),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text('Queens Quest'),
+              ),
+            ],
+
+          ),
         ),
         body: const Center(
           child: QueenList(),
