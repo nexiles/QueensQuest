@@ -17,7 +17,7 @@ void main() {
 class QueensQuest extends StatelessWidget {
   QueensQuest({super.key});
 
-  final StreamController<List<Queen>> counterController = StreamController<List<Queen>>();
+  final StreamController<List<Queen>> queenListStreamController = StreamController<List<Queen>>();
 
   // This widget is the root of your application.
   @override
@@ -56,7 +56,7 @@ class QueensQuest extends StatelessWidget {
         ),
         body: Center(
           child: StreamBuilder<List<Queen>>(
-                  stream: counterController.stream,
+                  stream: queenListStreamController.stream,
                   builder: (BuildContext context, AsyncSnapshot<List<Queen>> snapshot) {
                     List<Queen>? queens = snapshot.data;
                     return queens != null
@@ -70,8 +70,8 @@ class QueensQuest extends StatelessWidget {
           child: Container(height: 50.0),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => QueensAPI.fetchQueens().then((queensList) => counterController.add(queensList)),
-          tooltip: 'Increment Counter',
+          onPressed: () => QueensAPI.fetchQueens().then((queensList) => queenListStreamController.add(queensList)),
+          tooltip: 'Fetch Queens',
           child: const Icon(Icons.add),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
