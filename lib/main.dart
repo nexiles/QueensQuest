@@ -5,9 +5,9 @@ import 'queenList.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:queens_quest/queen.dart';
+import 'package:english_words/english_words.dart';
 
 late final Logger logger;
-import 'package:english_words/english_words.dart';
 
 void main() {
   logger = Logger();
