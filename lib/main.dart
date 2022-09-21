@@ -116,6 +116,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return queensList;
   }
 
+  Future<Queen> fetchQueenById(int id) async {
+    final response = await http
+        .get(Uri.parse('http://www.nokeynoshade.party/api/queens/${id}'));
+    return Queen.fromJson(jsonDecode(response.body));
+  }
+
 }
 
 class RandomWords extends StatefulWidget {
