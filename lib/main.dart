@@ -111,9 +111,26 @@ class QueensQuest extends StatelessWidget {
         itemBuilder: (context, idx) {
           logger.i(queens.length);
           var queen = queens[idx];
+
+          var title;
+          if (queen.winner) {
+            title = Text(queen.name,
+                    style: const TextStyle(fontSize: 18, color: Colors.pink),
+                    textAlign: TextAlign.center);
+          } else if (queen.imageUrl == "no image") {
+            title = Text(queen.name,
+                    style: const TextStyle(fontSize: 18, decoration: TextDecoration.lineThrough),
+                    textAlign: TextAlign.center);
+          } else {
+            title = Text(queen.name,
+                    style: const TextStyle(fontSize: 18),
+                    textAlign: TextAlign.center);
+          }
+
+
           return ListTile(
-            title: Text(queen.name, style: const TextStyle(fontSize: 18),textAlign: TextAlign.center),
-            subtitle: Text(queen.quote, textAlign: TextAlign.center),
+            title: title,
+            subtitle: queen.quote.isEmpty ? null : Text(queen.quote, textAlign: TextAlign.center),
             onTap: () => _onTapQueen(context, queen.id),
           );
         });
