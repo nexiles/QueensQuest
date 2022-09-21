@@ -1,18 +1,23 @@
 class Queen {
   final int id;
   final String name;
+  final String quote;
+  final bool winner;
   final String imageUrl;
 
-  Queen(this.id, this.name, this.imageUrl);
+  Queen(this.id, this.name, this.quote, this.winner, this.imageUrl);
 
   factory Queen.fromJson(Map<String, dynamic> json) {
-    return Queen(json["id"], json["name"], json["image_url"]);
+    return Queen(json["id"], json["name"], json["quote"], json["winner"],
+        json["image_url"]);
   }
 
   Map<String, dynamic> toJson() {
-       return <String, dynamic>{
+    return <String, dynamic>{
       'id': id,
       'name': name,
+      'quote': quote,
+      'winner': winner,
       'image_url': imageUrl
     };
   }
