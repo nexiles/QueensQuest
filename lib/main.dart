@@ -39,7 +39,7 @@ class QueensQuest extends StatelessWidget {
           title: const Text('Foo'),
         ),
         body: const Center(
-          child: RandomWords(),
+          child: QueenList(),
         ),
       ),
       // home: const MyHomePage(title: 'Queens Quest'),
