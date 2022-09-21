@@ -110,9 +110,11 @@ class QueensQuest extends StatelessWidget {
         itemCount: queens.length,
         itemBuilder: (context, idx) {
           logger.i(queens.length);
+          var queen = queens[idx];
           return ListTile(
-            title: Text(queens[idx].name, style: const TextStyle(fontSize: 18)),
-            onTap: () => _onTapQueen(context, queens[idx].id),
+            title: Text(queen.name, style: const TextStyle(fontSize: 18),textAlign: TextAlign.center),
+            subtitle: Text(queen.quote, textAlign: TextAlign.center),
+            onTap: () => _onTapQueen(context, queen.id),
           );
         });
   }
