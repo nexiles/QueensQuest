@@ -9,7 +9,7 @@ class QueensAPI {
   // https://docs.flutter.dev/cookbook/networking/background-parsing
   static Future<List<Queen>> fetchQueens() async {
     final response =
-        await http.get(Uri.parse('http://www.nokeynoshade.party/api/queens'));
+        await http.get(Uri.parse('http://www.nokeynoshade.party/api/queens/all'));
     final parsed = jsonDecode(response.body).cast<Map<String, dynamic>>();
     var queensList = parsed.map<Queen>((json) => Queen.fromJson(json)).toList();
     queensList.forEach((queen) => logger.i(jsonEncode(queen)));

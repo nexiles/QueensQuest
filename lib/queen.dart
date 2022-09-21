@@ -1,3 +1,6 @@
+
+import 'package:flutter/cupertino.dart';
+
 class Queen {
   final int id;
   final String name;
@@ -8,8 +11,14 @@ class Queen {
   Queen(this.id, this.name, this.quote, this.winner, this.imageUrl);
 
   factory Queen.fromJson(Map<String, dynamic> json) {
-    return Queen(json["id"], json["name"], json["quote"], json["winner"],
-        json["image_url"]);
+    var imageUrl = json["image_url"];
+    return Queen(
+        json["id"],
+        json["name"],
+        json["quote"],
+        json["winner"],
+        imageUrl != null ? imageUrl : "no image"
+    );
   }
 
   Map<String, dynamic> toJson() {
