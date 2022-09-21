@@ -7,6 +7,11 @@ class QueenDetailRoute extends StatelessWidget {
   final Queen? queen;
   @override
   Widget build(BuildContext context) {
-    return Text(queen?.name != null ? queen!.name : 'null');
+    return Container(
+    decoration:
+         BoxDecoration(
+             image: DecorationImage(
+                        image: NetworkImage(queen!.imageUrl))));
+    // return Text(queen?.name != null ? queen!.name : 'null');
   }
 }

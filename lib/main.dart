@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:queens_quest/api.dart';
 import 'package:logger/logger.dart';
@@ -19,7 +20,8 @@ void main() {
 class QueensQuest extends StatelessWidget {
   QueensQuest({super.key});
 
-  final StreamController<List<Queen>> queenListStreamController = StreamController<List<Queen>>();
+  StreamController<List<Queen>> queenListStreamController =
+      StreamController<List<Queen>>();
 
   // This widget is the root of your application.
   @override
@@ -41,40 +43,59 @@ class QueensQuest extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
                 'assets/images/queensCrown.png',
                 fit: BoxFit.contain,
-                 height: 32,
+                height: 32,
               ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text('Queens Quest'),
-              ),
+              GestureDetector(
+                  onTap: () {
+                    queenListStreamController = StreamController<List<Queen>>();
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: const Text('Queens Quest'),
+                  )),
             ],
-
           ),
         ),
         body: Center(
           child: StreamBuilder<List<Queen>>(
-                  stream: queenListStreamController.stream,
-                  builder: (BuildContext context, AsyncSnapshot<List<Queen>> snapshot) {
-                    List<Queen>? queens = snapshot.data;
-                    return queens != null
-                        ? _buildContent(context, queens)
-                        : Text("NO DATDA");
-                  },
-                ),
+            stream: queenListStreamController.stream,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Queen>> snapshot) {
+              List<Queen>? queens = snapshot.data;
+              return queens != null
+                  ? _buildContent(context, queens)
+                  : AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          'Fetch Queens',
+                          textStyle: const TextStyle(
+                              fontSize: 40.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.pink),
+                          speed: const Duration(milliseconds: 500),
+                        ),
+                      ],
+                      isRepeatingAnimation: true,
+                      pause: const Duration(milliseconds: 1000),
+                      displayFullTextOnTap: true,
+                    );
+            },
+          ),
         ),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
           child: Container(height: 50.0),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => QueensAPI.fetchQueens().then((queensList) => queenListStreamController.add(queensList)),
+          onPressed: () => QueensAPI.fetchQueens()
+              .then((queensList) => queenListStreamController.add(queensList)),
           tooltip: 'Fetch Queens',
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.woman),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
@@ -84,8 +105,7 @@ class QueensQuest extends StatelessWidget {
 
   Widget _buildContent(BuildContext context, List<Queen> queens) {
     return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) =>
-        const Divider(),
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
         padding: const EdgeInsets.all(8),
         itemCount: queens.length,
         itemBuilder: (context, idx) {
@@ -97,12 +117,10 @@ class QueensQuest extends StatelessWidget {
         });
   }
 
-  void _onTapQueen(BuildContext context,int queenId) {
-    final _data = QueensAPI.fetchQueenById(queenId).then((value) =>
-      Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => QueenDetailRoute(queen: value))));
+  void _onTapQueen(BuildContext context, int queenId) {
+    QueensAPI.fetchQueenById(queenId).then((value) => Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => QueenDetailRoute(queen: value))));
   }
 }
-
-
