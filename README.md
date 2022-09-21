@@ -18,3 +18,13 @@ samples, guidance on mobile development, and a full API reference.
 ## API
 
 The API to go for: [DragRaceAPI](https://drag-race-api.readme.io/docs)
+
+Root API URL: `http://www.nokeynoshade.party/api/queens`
+
+### Endpoints of interest
+
+**Get Queens**:
+- [https://drag-race-api.readme.io/docs/get-queens](https://drag-race-api.readme.io/docs/get-queens)
+
+**Get Queen By ID**:
+- [https://drag-race-api.readme.io/docs/get-one-queen](https://drag-race-api.readme.io/docs/get-one-queen)
