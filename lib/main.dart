@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
+import 'package:queens_quest/queen.dart';
+
+late final Logger logger;
 
 void main() {
+  logger = Logger();
   runApp(const QueensQuest());
 }
 
@@ -106,10 +114,21 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: fetchQueens,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+  // https://docs.flutter.dev/cookbook/networking/background-parsing
+  Future<List<Queen>> fetchQueens() async {
+    final response = await http
+        .get(Uri.parse('http://www.nokeynoshade.party/api/queens'));
+    final parsed = jsonDecode(response.body).cast<Map<String, dynamic>>();
+    var queensList = parsed.map<Queen>((json) => Queen.fromJson(json)).toList();
+    queensList.forEach((queen) => logger.i(jsonEncode(queen)));
+    return queensList;
+  }
+
 }
