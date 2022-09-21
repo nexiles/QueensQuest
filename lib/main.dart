@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ void main() {
 class QueensQuest extends StatelessWidget {
   QueensQuest({super.key});
 
-  var queensList;
+  final StreamController<List<Queen>> counterController = StreamController<List<Queen>>();
 
   // This widget is the root of your application.
   @override
@@ -54,27 +55,22 @@ class QueensQuest extends StatelessWidget {
           ),
         ),
         body: Center(
-          child: queensList != null ? ListView.separated(
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              padding: const EdgeInsets.all(8),
-              itemCount: queensList.length,
-              itemBuilder: (context, idx) {
-                logger.i(queensList.length);
-                return Text(
-                  queensList[idx].name,
-                  style: const TextStyle(fontSize: 18),
-                );
-              }) : Text("No data"),
+          child: StreamBuilder<List<Queen>>(
+                  stream: counterController.stream,
+                  builder: (BuildContext context, AsyncSnapshot<List<Queen>> snapshot) {
+                    List<Queen>? queens = snapshot.data;
+                    return queens != null
+                        ? _buildContent(context, queens)
+                        : Text("NO DATDA");
+                  },
+                ),
         ),
         bottomNavigationBar: BottomAppBar(
           shape: const CircularNotchedRectangle(),
           child: Container(height: 50.0),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            queensList = QueensAPI.fetchQueens();
-          },
+          onPressed: () => QueensAPI.fetchQueens().then((queensList) => counterController.add(queensList)),
           tooltip: 'Increment Counter',
           child: const Icon(Icons.add),
         ),
@@ -82,6 +78,21 @@ class QueensQuest extends StatelessWidget {
       ),
       // home: const MyHomePage(title: 'Queens Quest'),
     );
+  }
+
+  Widget _buildContent(BuildContext context, List<Queen> queens) {
+    return ListView.separated(
+        separatorBuilder: (BuildContext context, int index) =>
+        const Divider(),
+        padding: const EdgeInsets.all(8),
+        itemCount: queens.length,
+        itemBuilder: (context, idx) {
+          logger.i(queens.length);
+          return Text(
+            queens[idx].name,
+            style: const TextStyle(fontSize: 18),
+          );
+        });
   }
 }
 
